@@ -19,13 +19,13 @@ Po správné instalaci při startu zobrazí rich presense
 `Nečinný` a v dalším řádku `Video nebylo načteno` jako stav
 při každém spuštění Aegisubu.
 
-![První spuštění](./img/first-launch.png "První spuštění")
+![První spuštění](./img/spusteni.png "První spuštění")
 
 Pak načtěte titulky a video a klikněte na jednu z možností 
 z nabídky `Automation` pro aktualizace údajů Rich Presence.
 
-![Kliknutí na menu](./img/click-menu.png "Kliknutí na menu")
-![Detaily jsou aktualizovány](./img/detail-updated.png "Detaily jsou aktualizovány")
+![Kliknutí na menu](./img/menu.png "Kliknutí na menu")
+![Detaily jsou aktualizovány](./img/detail.png "Detaily jsou aktualizovány")
 
 ### Varování
 Před aktualizací se ujistěte, že:
