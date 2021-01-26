@@ -13,7 +13,7 @@ Navštivte nás na adrese https://www.teamnshonyaku.cz nebo na discordu https://
 - Umístěte skript `discord-rpc_cz.lua` do složky `automation\autoload`.
 
 ### Příklad
-Pokud jste instalovali Aegisub do složky `C:\Program Files (x86)\Aegisub` tak:
+Pokud jste instalovali Aegisub do složky `C:\Program Files (x86)\Aegisub`, tak:
 - Umístěte `discord-rpc.dll` do `C:\Program Files (x86)\Aegisub`.
 - Umístěte `discord-rpc_cz.lua` do `C:\Program Files (x86)\Aegisub\automation\autoload`.
 
