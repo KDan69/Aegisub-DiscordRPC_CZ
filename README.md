@@ -2,6 +2,9 @@
 Lua plugin (makro) pro Aegisub, sloužící k výstupu informací
 momentálně upravovaných titulek do Discord Rich Presence
 
+![TeamNS](./img/teamns.png "TeamNS")
+
+Navštivte nás na adrese https://www.teamnshonyaku.cz nebo na discordu https://discord.com/invite/GWQUvBYZ
 ## Instalace
 - Umístěte soubor `discord-rpc.dll` do instalační složky s Aegisubem.
   - Pokud používáte 64-bitovou verzi Aegisubu, použijte prosím
