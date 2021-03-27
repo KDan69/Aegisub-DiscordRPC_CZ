@@ -18,9 +18,10 @@ Pokud jste instalovali Aegisub do složky `C:\Program Files (x86)\Aegisub`, tak:
 - Umístěte `discord-rpc_cz.lua` do `C:\Program Files (x86)\Aegisub\automation\autoload`.
 
 ## Použití
-Po správné instalaci při startu zobrazí Rich Presence
+Po správné instalaci při startu zobrazí v Rich Presence
 `Nečinný` a v dalším řádku `Video nebylo načteno` jako stav
 při každém spuštění Aegisubu.
+Pokud se nic nezobrazilo, tak zkuste spustit Aegisub jako správce.
 
 ![První spuštění](./img/spusteni.png "První spuštění")
 
