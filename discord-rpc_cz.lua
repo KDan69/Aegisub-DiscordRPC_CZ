@@ -11,7 +11,7 @@
 
 local ffi = require "ffi"
 local discordRPClib = ffi.load("discord-rpc")
-local appId = "592657785368477728"
+local appId = "830097553595826216"
 
 script_name = "Discord RPC"
 script_description = "Outputs Aegisub editing to Discord Rich Presence"
@@ -261,7 +261,7 @@ end
 discordRPC.initialize(appId, true)
 local now = os.time(os.date('*t'))
 presence = {
-    state = "Video nebylo načteno",
+	state = "teamnshonyaku.cz",
     details = "Nečinný",
     startTimestamp = now,
     largeImageKey = "aegisub",
