@@ -29,11 +29,17 @@ Pak načtěte titulky a video a klikněte na možnost `Discord RPC`
 z nabídky `Automation` pro otevření menu aktualizace údajů Rich Presence.
 
 ![Kliknutí na menu](./img/menu.png "Kliknutí na menu")
+
+Zde můžete zvolit typ zprávy nebo vypnout RPC:
+
+![Okno](./img/okno.png "Okno")
+
 ![Detaily jsou aktualizovány](./img/detail.png "Detaily jsou aktualizovány")
 
 ### Upozornění
+Aktualizace údajů může chvíli trvat
+
 Před aktualizací se ujistěte, že:
 - Máte načtené video.
 - Máte načtené titulky, obsahující cestu k videosouboru.
 
-Aktualizace údajů může chvíli trvat
