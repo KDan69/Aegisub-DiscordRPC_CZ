@@ -1,22 +1,24 @@
+
+--  ▀▀█▀▀ █▀▀▀█ ▀▀▀▀█ █▀█▀█ █▀▀▀█ █▀▀▀▀
+--    █   █  █    █ █ █ █ █ █   █ █
+--    █   █ █    █  █ █ █ █ █   █ ▀▀▀▀█
+--    ▀   ▀▀▀▀▀ ▀▀▀▀▀ ▀ ▀ ▀ █   █     █
+--       TEAM NSHON'YAKU    ▀   ▀ ▀▀▀▀▀  
+
 -- Discord RPC
 -- Outputs current editing session to Discord Rich Presence
 --
--- This file is written by muhdnurhidayat
--- Latest release and details at https://github.com/MuhdNurHidayat/Aegisub-DiscordRPC
--- This file is licensed under MIT
---
--- This file uses some code from https://github.com/pfirsich/lua-discordRPC
--- The codes from pfirsich/lua-discordRPC is licensed under MIT
---
+-- Original code: muhdnurhidayat (https://github.com/MuhdNurHidayat/Aegisub-DiscordRPC)
+
 
 local ffi = require "ffi"
 local discordRPClib = ffi.load("discord-rpc")
 local appId = "830097553595826216"
 
 script_name = "Discord RPC"
-script_description = "Outputs Aegisub editing to Discord Rich Presence"
-script_author = "muhdnurhidayat"
-script_version = "2"
+script_description = "Výstup Aegisub informací do Discord Rich Presence"
+script_author = "KDan"
+script_version = "3"
 
 ffi.cdef[[
 typedef struct DiscordRichPresence {
@@ -259,15 +261,86 @@ function discordRPC.errored(errorCode, message)
 end
 
 discordRPC.initialize(appId, true)
+
 local now = os.time(os.date('*t'))
 presence = {
-	state = "teamnshonyaku.cz",
-    details = "Nečinný",
+	state = "KDan#7873 / TeamNS",
+    details = "Nečinný | Skript vytvořil",
     startTimestamp = now,
     largeImageKey = "aegisub",
     smallImageKey = "",
 }
+
 discordRPC.updatePresence(presence)
+
+dialog_buttons={"Zapnout","Vypnout"}
+dialog_config=
+{
+    {
+        class="dropdown",name="zprava",
+        x=1,y=0,width=1,height=1,
+        items={"Překlad anime","Korekce anime"},
+        value="Překlad anime"
+    },
+    {
+        class="checkbox",name="zprava_check",
+        x=0,y=1,width=1,height=1,
+        label="Vlastní zpráva:",
+        value=false
+    },
+    {
+        class="label",
+        x=0,y=0,width=1,height=1,
+        label="Zpráva:"
+    },
+    {
+        class="textbox",name="vlastni_zprava",
+        x=1,y=1,width=1,height=1,
+        value=nil
+    }
+}
+
+function rpc_setup()
+	tlacitko, results = aegisub.dialog.display(dialog_config,dialog_buttons)	
+	if tlacitko=="Vypnout" then
+		discordRPC.clearPresence()
+	elseif tlacitko=="Zapnout" then
+		discordRPC.initialize(appId, true)
+		local now = os.time(os.date('*t'))
+		if results["zprava_check"] == false then
+			if results["zprava"]=="Překlad anime" then
+				update_rpc_1()
+			elseif results["zprava"]=="Korekce anime" then
+				update_rpc_2()
+			end
+		else
+			if(string.len(results["vlastni_zprava"]) > 117) then
+				videoname = string.sub(results["vlastni_zprava"], 1, 117) .. "…"
+			end 
+			if (aegisub.project_properties() ~= nil) then
+				local videoname = aegisub.project_properties().video_file;
+				if (videoname ~= " ") then
+					videoname = videoname:match("[^\\]*$")
+					if(string.len(videoname) > 117) then
+						videoname = string.sub(videoname, 1, 117) .. "…"
+					end                
+					presence = {
+						state = "Video: " .. videoname,
+						details = results["vlastni_zprava"],
+						startTimestamp = now,
+						largeImageKey = "aegisub",
+						smallImageKey = "",
+					}
+					discordRPC.updatePresence(presence)
+				else
+					aegisub.debug.out("Please ensure your subtitle file has video file path defined before updating the RPC")
+				end
+			else
+				aegisub.debug.out("Please ensure your subtitle file has video file path defined before updating the RPC")
+			end
+		end
+	end
+end
 
 function update_rpc_1()
     if (aegisub.project_properties() ~= nil) then
@@ -281,7 +354,7 @@ function update_rpc_1()
                 state = "Video: " .. videoname,
                 details = "Překládání anime",
                 startTimestamp = now,
-                largeImageKey = "aegisub",
+                largeImageKey = "preklad",
                 smallImageKey = "",
             }
             discordRPC.updatePresence(presence)
@@ -304,30 +377,7 @@ function update_rpc_2()
                 state = "Video: " .. videoname,
                 details = "Korekce anime",
                 startTimestamp = now,
-                largeImageKey = "aegisub",
-                smallImageKey = "",
-            }
-            discordRPC.updatePresence(presence)
-        else
-            aegisub.debug.out("Please ensure your subtitle file has video file path defined before updating the RPC")
-        end
-    else
-        aegisub.debug.out("Please ensure your subtitle file has video file path defined before updating the RPC")
-    end
-end
-function update_rpc_3()
-    if (aegisub.project_properties() ~= nil) then
-        local videoname = aegisub.project_properties().video_file;
-        if (videoname ~= " ") then
-            videoname = videoname:match("[^\\]*$")
-            if(string.len(videoname) > 117) then
-                videoname = string.sub(videoname, 1, 117) .. "…"
-            end                
-            presence = {
-                state = "Video: " .. videoname,
-                details = "Časování karaoke anime",
-                startTimestamp = now,
-                largeImageKey = "aegisub",
+                largeImageKey = "korekce",
                 smallImageKey = "",
             }
             discordRPC.updatePresence(presence)
@@ -339,6 +389,4 @@ function update_rpc_3()
     end
 end
 
-aegisub.register_macro("Discord RPC - Překlad", "Update Discord Rich Presence", update_rpc_1)
-aegisub.register_macro("Discord RPC - Korekce", "Update Discord Rich Presence", update_rpc_2)
-aegisub.register_macro("Discord RPC - Karaoke", "Update Discord Rich Presence", update_rpc_3)
+aegisub.register_macro("Discord RPC", "Nastavit Discord RPC", rpc_setup)
