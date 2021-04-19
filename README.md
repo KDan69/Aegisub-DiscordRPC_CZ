@@ -6,6 +6,10 @@ momentálně upravovaných titulek do Discord Rich Presence
 
 Navštivte nás na adrese https://www.teamnshonyaku.cz nebo na discordu https://discord.gg/vdMh2kB
 ## Instalace
+### Aktualizace
+- Pokud aktualizujete skript ze starší verze, stačí jen
+  umístit skript `discord-rpc_cz.lua` do složky `automation\autoload`
+### Nová instalace
 - Umístěte soubor `discord-rpc.dll` do instalační složky s Aegisubem.
   - Pokud používáte 64-bitovou verzi Aegisubu, použijte prosím
     soubor `discord-rpc-64.dll` a pojmenujte ho jako `discord-rpc.dll` 
