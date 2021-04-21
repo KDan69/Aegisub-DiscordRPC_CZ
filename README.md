@@ -34,7 +34,7 @@ z nabídky `Automation` pro otevření menu aktualizace údajů Rich Presence.
 
 ![Kliknutí na menu](./img/menu.png "Kliknutí na menu")
 
-Zde můžete zvolit typ zprávy nebo vypnout RPC:
+Zde můžete zvolit typ zprávy, ikonu, skrýt název videa nebo vypnout RPC:
 
 ![Okno](./img/okno.png "Okno")
 
