@@ -18,7 +18,7 @@ local appId = "830097553595826216"
 script_name = "Discord RPC"
 script_description = "Výstup Aegisub informací do Discord Rich Presence"
 script_author = "KDan"
-script_version = "3.1"
+script_version = "3.2"
 
 ffi.cdef[[
 typedef struct DiscordRichPresence {
@@ -285,13 +285,19 @@ dialog_config=
     },
     {
         class="checkbox",name="zprava_check",
-        x=0,y=1,width=1,height=1,
+        x=0,y=2,width=1,height=1,
         label="Vlastní zpráva:",
+        value=false
+    },
+	{
+        class="checkbox",name="video_check",
+        x=0,y=3,width=1,height=1,
+        label="Skrýt název videa",
         value=false
     },
     {
         class="dropdown",name="ikona_menu",
-        x=1,y=2,width=1,height=1,
+        x=1,y=1,width=1,height=1,
         items={"Výchozí","Překlad","Korekce"},
         value="Výchozí"
     },
@@ -302,12 +308,12 @@ dialog_config=
     },
 	{
         class="label",
-        x=0,y=2,width=1,height=1,
+        x=0,y=1,width=1,height=1,
         label="Ikona:"
     },
     {
         class="textbox",name="vlastni_zprava",
-        x=1,y=1,width=1,height=1,
+        x=1,y=2,width=1,height=1,
         value=nil
     }
 }
@@ -357,9 +363,13 @@ function rpc_setup()
 					if(string.len(videoname) > 117) then
 						videoname = string.sub(videoname, 1, 117) .. "…"
 					end                
+					status2 = "Video: " .. videoname
+					if results["video_check"] == true then
+						status2 = "teamnshonyaku.cz"
+					end
 					refreshIkona()
 					presence = {
-						state = "Video: " .. videoname,
+						state = status2,
 						details = results["vlastni_zprava"],
 						startTimestamp = now,
 						largeImageKey = dis_ikona,
@@ -384,8 +394,12 @@ function update_rpc_1()
             if(string.len(videoname) > 117) then
                 videoname = string.sub(videoname, 1, 117) .. "…"
             end                
-            presence = {
-                state = "Video: " .. videoname,
+            status2 = "Video: " .. videoname
+			if results["video_check"] == true then
+				status2 = "teamnshonyaku.cz"
+		    end
+			presence = {
+                state = status2,
                 details = "Překládání anime",
                 startTimestamp = now,
                 largeImageKey = dis_ikona,
@@ -407,8 +421,12 @@ function update_rpc_2()
             if(string.len(videoname) > 117) then
                 videoname = string.sub(videoname, 1, 117) .. "…"
             end                
-            presence = {
-                state = "Video: " .. videoname,
+            status2 = "Video: " .. videoname
+			if results["video_check"] == true then
+				status2 = "teamnshonyaku.cz"
+			end
+			presence = {
+                state = status2,
                 details = "Korekce anime",
                 startTimestamp = now,
                 largeImageKey = dis_ikona,
