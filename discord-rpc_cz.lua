@@ -18,7 +18,7 @@ local appId = "830097553595826216"
 script_name = "Discord RPC"
 script_description = "Výstup Aegisub informací do Discord Rich Presence"
 script_author = "KDan"
-script_version = "3"
+script_version = "3.1"
 
 ffi.cdef[[
 typedef struct DiscordRichPresence {
@@ -260,6 +260,7 @@ function discordRPC.errored(errorCode, message)
     print("[discordrpc] Discord: error (" .. errorCode .. ": " .. message .. ")")
 end
 
+dis_ikona = "aegisub"
 discordRPC.initialize(appId, true)
 
 local now = os.time(os.date('*t'))
@@ -289,9 +290,20 @@ dialog_config=
         value=false
     },
     {
+        class="dropdown",name="ikona_menu",
+        x=1,y=2,width=1,height=1,
+        items={"Výchozí","Překlad","Korekce"},
+        value="Výchozí"
+    },
+    {
         class="label",
         x=0,y=0,width=1,height=1,
         label="Zpráva:"
+    },
+	{
+        class="label",
+        x=0,y=2,width=1,height=1,
+        label="Ikona:"
     },
     {
         class="textbox",name="vlastni_zprava",
@@ -299,6 +311,25 @@ dialog_config=
         value=nil
     }
 }
+
+function refreshIkona()
+	if results["ikona_menu"] == "Výchozí" then
+		if results["zprava_check"] == false then
+			if results["zprava"] == "Překlad anime" then
+				dis_ikona = "preklad"
+			elseif results["zprava"] == "Korekce anime" then
+				dis_ikona = "korekce"
+			end
+		end
+		if results["zprava_check"] == true then 
+			dis_ikona = "aegisub"
+		end
+	elseif results["ikona_menu"]=="Překlad" then
+		dis_ikona = "preklad"
+	elseif results["ikona_menu"]=="Korekce" then
+		dis_ikona = "korekce"
+	end
+end
 
 function rpc_setup()
 	tlacitko, results = aegisub.dialog.display(dialog_config,dialog_buttons)	
@@ -309,8 +340,10 @@ function rpc_setup()
 		local now = os.time(os.date('*t'))
 		if results["zprava_check"] == false then
 			if results["zprava"]=="Překlad anime" then
+				refreshIkona()
 				update_rpc_1()
 			elseif results["zprava"]=="Korekce anime" then
+				refreshIkona()
 				update_rpc_2()
 			end
 		else
@@ -324,11 +357,12 @@ function rpc_setup()
 					if(string.len(videoname) > 117) then
 						videoname = string.sub(videoname, 1, 117) .. "…"
 					end                
+					refreshIkona()
 					presence = {
 						state = "Video: " .. videoname,
 						details = results["vlastni_zprava"],
 						startTimestamp = now,
-						largeImageKey = "aegisub",
+						largeImageKey = dis_ikona,
 						smallImageKey = "",
 					}
 					discordRPC.updatePresence(presence)
@@ -354,7 +388,7 @@ function update_rpc_1()
                 state = "Video: " .. videoname,
                 details = "Překládání anime",
                 startTimestamp = now,
-                largeImageKey = "preklad",
+                largeImageKey = dis_ikona,
                 smallImageKey = "",
             }
             discordRPC.updatePresence(presence)
@@ -377,7 +411,7 @@ function update_rpc_2()
                 state = "Video: " .. videoname,
                 details = "Korekce anime",
                 startTimestamp = now,
-                largeImageKey = "korekce",
+                largeImageKey = dis_ikona,
                 smallImageKey = "",
             }
             discordRPC.updatePresence(presence)
