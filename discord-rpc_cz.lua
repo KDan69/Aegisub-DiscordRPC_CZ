@@ -5,10 +5,7 @@
 --    ▀   ▀▀▀▀▀ ▀▀▀▀▀ ▀ ▀ ▀ █   █     █
 --       TEAM NSHON'YAKU    ▀   ▀ ▀▀▀▀▀  
 
--- Discord RPC
--- Outputs current editing session to Discord Rich Presence
---
--- Original code: muhdnurhidayat (https://github.com/MuhdNurHidayat/Aegisub-DiscordRPC)
+-- Původní kód: muhdnurhidayat (https://github.com/MuhdNurHidayat/Aegisub-DiscordRPC)
 
 
 local ffi = require "ffi"
@@ -18,7 +15,7 @@ local appId = "830097553595826216"
 script_name = "Discord RPC"
 script_description = "Výstup Aegisub informací do Discord Rich Presence"
 script_author = "KDan"
-script_version = "3.2"
+script_version = "3.6"
 
 ffi.cdef[[
 typedef struct DiscordRichPresence {
@@ -260,63 +257,139 @@ function discordRPC.errored(errorCode, message)
     print("[discordrpc] Discord: error (" .. errorCode .. ": " .. message .. ")")
 end
 
+
 dis_ikona = "aegisub"
-discordRPC.initialize(appId, true)
 
-local now = os.time(os.date('*t'))
-presence = {
-	state = "KDan#7873 / TeamNS",
-    details = "Nečinný | Skript vytvořil",
-    startTimestamp = now,
-    largeImageKey = "aegisub",
-    smallImageKey = "",
-}
+function zapsatConfig()
+	config_soubor = io.open("discord_rpc.cfg", "w")
+	io.output(config_soubor)
+	if results["zprava_check"] == false then
+		io.write("zprava=" .. results["zprava"], "\n")
+	else
+		io.write("zprava=" .. results["vlastni_zprava"], "\n")
+	end
+	io.write("ikona=" .. results["ikona_menu"], "\n")
+	io.write("skrytNazev=" .. tostring(results["video_check"]), "\n")
+	io.write("autostart=" .. tostring(results["start_check"]))
+	io.close(config_soubor)
+end
 
-discordRPC.updatePresence(presence)
-
-dialog_buttons={"Zapnout","Vypnout"}
-dialog_config=
-{
-    {
-        class="dropdown",name="zprava",
-        x=1,y=0,width=1,height=1,
-        items={"Překlad anime","Korekce anime"},
-        value="Překlad anime"
-    },
-    {
-        class="checkbox",name="zprava_check",
-        x=0,y=2,width=1,height=1,
-        label="Vlastní zpráva:",
-        value=false
-    },
+function cistConfig()
+	config_soubor = io.open("discord_rpc.cfg", "r")
+	if config_soubor == nil then
+		config_soubor = io.open("discord_rpc.cfg", "w")
+		io.output(config_soubor)
+		io.write("zprava=Překlad anime", "\n")
+		io.write("ikona=Výchozí" , "\n")
+		io.write("skrytNazev=false", "\n")
+		io.write("autostart=true")
+		io.close(config_soubor)
+		config_soubor = io.open("discord_rpc.cfg", "r")
+	end
+	io.input(config_soubor)
+	configZprava=io.read("*line")
+	configIkona=io.read("*line")
+	configSkrytNazev=io.read("*line")
+	configAutostart=io.read("*line")
+	io.close(config_soubor)
+	
+	zprava_checkValue = false
+	vlastni_zpravaValue = nil
+	if configZprava == "zprava=Překlad anime" then
+		zpravaValue = "Překlad anime"
+	elseif configZprava == "zprava=Korekce anime" then
+		zpravaValue = "Korekce anime"
+	else
+		zprava_checkValue = true
+		vlastni_zpravaValue = configZprava:gsub("zprava=", "")
+	end
+	if configIkona == "ikona=Překlad" then
+		ikonaValue = "Překlad"
+	elseif configIkona == "ikona=Korekce" then
+		ikonaValue = "Korekce"
+	else
+		ikonaValue = "Výchozí"
+	end
+	if configSkrytNazev == "skrytNazev=true" then
+		skrytNazevValue = true
+	else
+		skrytNazevValue = false
+	end
+	if configAutostart == "autostart=false" then
+		autostartValue = false
+	else
+		autostartValue = true
+	end
+	dialog_config=
 	{
-        class="checkbox",name="video_check",
-        x=0,y=3,width=1,height=1,
-        label="Skrýt název videa",
-        value=false
-    },
-    {
-        class="dropdown",name="ikona_menu",
-        x=1,y=1,width=1,height=1,
-        items={"Výchozí","Překlad","Korekce"},
-        value="Výchozí"
-    },
-    {
-        class="label",
-        x=0,y=0,width=1,height=1,
-        label="Zpráva:"
-    },
-	{
-        class="label",
-        x=0,y=1,width=1,height=1,
-        label="Ikona:"
-    },
-    {
-        class="textbox",name="vlastni_zprava",
-        x=1,y=2,width=1,height=1,
-        value=nil
-    }
-}
+		{
+			class="dropdown",name="zprava",
+			x=1,y=0,width=1,height=1,
+			items={"Překlad anime","Korekce anime"},
+			value=zpravaValue
+		},
+		{
+			class="checkbox",name="zprava_check",
+			x=0,y=2,width=1,height=1,
+			label="Vlastní zpráva:",
+			value=zprava_checkValue
+		},
+		{
+			class="checkbox",name="video_check",
+			x=0,y=4,width=1,height=1,
+			label="Skrýt název videa",
+			value=skrytNazevValue
+		},
+		{
+			class="checkbox",name="start_check",
+			x=1,y=4,width=1,height=1,
+			label="Zakázat automatické spouštění",
+			value=autostartValue
+		},
+		{
+			class="dropdown",name="ikona_menu",
+			x=1,y=1,width=1,height=1,
+			items={"Výchozí","Překlad","Korekce"},
+			value=ikonaValue
+		},
+		{
+			class="label",
+			x=0,y=0,width=1,height=1,
+			label="Zpráva:"
+		},
+		{
+			class="label",
+			x=0,y=1,width=1,height=1,
+			label="Ikona:"
+		},
+		{
+			class="textbox",name="vlastni_zprava",
+			x=1,y=2,width=1,height=2,
+			value=vlastni_zpravaValue
+		}
+	}
+end
+
+cistConfig()
+
+if autostartValue == false then
+
+	discordRPC.initialize(appId, true)
+
+	local now = os.time(os.date('*t'))
+
+	presence = {
+		state = "KDan#7873 / TeamNS",
+		details = "Nečinný | Skript vytvořil",
+		startTimestamp = now,
+		largeImageKey = "aegisub",
+		smallImageKey = "",
+	}
+
+	discordRPC.updatePresence(presence)
+end
+
+dialog_buttons={"Ulozit"}
 
 function refreshIkona()
 	if results["ikona_menu"] == "Výchozí" then
@@ -338,53 +411,57 @@ function refreshIkona()
 end
 
 function rpc_setup()
+	cistConfig()
 	tlacitko, results = aegisub.dialog.display(dialog_config,dialog_buttons)	
-	if tlacitko=="Vypnout" then
-		discordRPC.clearPresence()
-	elseif tlacitko=="Zapnout" then
-		discordRPC.initialize(appId, true)
-		local now = os.time(os.date('*t'))
-		if results["zprava_check"] == false then
-			if results["zprava"]=="Překlad anime" then
-				refreshIkona()
-				update_rpc_1()
-			elseif results["zprava"]=="Korekce anime" then
-				refreshIkona()
-				update_rpc_2()
-			end
-		else
-			if(string.len(results["vlastni_zprava"]) > 117) then
-				videoname = string.sub(results["vlastni_zprava"], 1, 117) .. "…"
-			end 
-			if (aegisub.project_properties() ~= nil) then
-				local videoname = aegisub.project_properties().video_file;
-				if (videoname ~= " ") then
-					videoname = videoname:match("[^\\]*$")
-					if(string.len(videoname) > 117) then
-						videoname = string.sub(videoname, 1, 117) .. "…"
-					end                
-					status2 = "Video: " .. videoname
-					if results["video_check"] == true then
-						status2 = "teamnshonyaku.cz"
-					end
-					refreshIkona()
-					presence = {
-						state = status2,
-						details = results["vlastni_zprava"],
-						startTimestamp = now,
-						largeImageKey = dis_ikona,
-						smallImageKey = "",
-					}
-					discordRPC.updatePresence(presence)
-				else
-					aegisub.debug.out("Please ensure your subtitle file has video file path defined before updating the RPC")
+	if tlacitko=="Ulozit" then
+		zapsatConfig()
+	end
+end
+
+function rpc_refresh()
+	discordRPC.initialize(appId, true)
+	local now = os.time(os.date('*t'))
+	if results["zprava_check"] == false then
+		if results["zprava"]=="Překlad anime" then
+			refreshIkona()
+			update_rpc_1()
+		elseif results["zprava"]=="Korekce anime" then
+			refreshIkona()
+			update_rpc_2()
+		end
+	else
+		if(string.len(results["vlastni_zprava"]) > 117) then
+			videoname = string.sub(results["vlastni_zprava"], 1, 117) .. "…"
+		end 
+		if (aegisub.project_properties() ~= nil) then
+			local videoname = aegisub.project_properties().video_file;
+			if (videoname ~= " ") then
+				videoname = videoname:match("[^\\]*$")
+				if(string.len(videoname) > 117) then
+					videoname = string.sub(videoname, 1, 117) .. "…"
+				end                
+				status2 = "Video: " .. videoname
+				if results["video_check"] == true then
+					status2 = "teamnshonyaku.cz"
 				end
+				refreshIkona()
+				presence = {
+					state = status2,
+					details = results["vlastni_zprava"],
+					startTimestamp = now,
+					largeImageKey = dis_ikona,
+					smallImageKey = "",
+				}
+				discordRPC.updatePresence(presence)
 			else
 				aegisub.debug.out("Please ensure your subtitle file has video file path defined before updating the RPC")
 			end
+		else
+			aegisub.debug.out("Please ensure your subtitle file has video file path defined before updating the RPC")
 		end
 	end
 end
+
 
 function update_rpc_1()
     if (aegisub.project_properties() ~= nil) then
@@ -441,4 +518,6 @@ function update_rpc_2()
     end
 end
 
-aegisub.register_macro("Discord RPC", "Nastavit Discord RPC", rpc_setup)
+aegisub.register_macro("Discord RPC/Aktualizovat údaje", "Aktualizace Discord RPC", rpc_refresh)
+aegisub.register_macro("Discord RPC/Vypnout", "Vypnutí Discord RPC", discordRPC.clearPresence)
+aegisub.register_macro("Discord RPC/Nastavení", "Nastavení Discord RPC", rpc_setup)
