@@ -4,7 +4,7 @@ momentálně upravovaných titulek do Discord Rich Presence
 
 ![TeamNS](./img/teamns.png "TeamNS")
 
-Navštivte nás na adrese https://www.teamnshonyaku.cz nebo na discordu https://discord.gg/vdMh2kB
+Navštivte nás na adrese https://www.teamnshonyaku.cz nebo na discordu https://discord.gg/teamns
 ## Instalace
 ### Aktualizace
 - Pokud aktualizujete skript ze starší verze, stačí jen
