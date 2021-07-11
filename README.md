@@ -1,5 +1,5 @@
 # Aegisub DiscordRPC (CZ)
-Lua plugin (makro) pro Aegisub, sloužící k výstupu informací
+Lua skript pro Aegisub, sloužící k výstupu informací
 momentálně upravovaných titulek do Discord Rich Presence
 
 ![TeamNS](./img/teamns.png "TeamNS")
