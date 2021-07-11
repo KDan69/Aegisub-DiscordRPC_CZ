@@ -257,12 +257,13 @@ function discordRPC.errored(errorCode, message)
     print("[discordrpc] Discord: error (" .. errorCode .. ": " .. message .. ")")
 end
 
-
+config_path = "C:\\aegisub_discord_rpc.cfg"
 dis_ikona = "aegisub"
 
 function zapsatConfig()
-	config_soubor = io.open("discord_rpc.cfg", "w")
+	config_soubor = io.open(config_path, "w")
 	io.output(config_soubor)
+	io.write("--Konfigurační soubor RPC skriptu--", "\n")
 	if results["zprava_check"] == false then
 		io.write("zprava=" .. results["zprava"], "\n")
 	else
@@ -275,18 +276,20 @@ function zapsatConfig()
 end
 
 function cistConfig()
-	config_soubor = io.open("discord_rpc.cfg", "r")
+	config_soubor = io.open(config_path, "r")
 	if config_soubor == nil then
-		config_soubor = io.open("discord_rpc.cfg", "w")
+		config_soubor = io.open(config_path, "w")
 		io.output(config_soubor)
+		io.write("--Konfigurační soubor RPC skriptu--", "\n")
 		io.write("zprava=Překlad anime", "\n")
 		io.write("ikona=Výchozí" , "\n")
 		io.write("skrytNazev=false", "\n")
 		io.write("autostart=false")
 		io.close(config_soubor)
-		config_soubor = io.open("discord_rpc.cfg", "r")
+		config_soubor = io.open(config_path, "r")
 	end
 	io.input(config_soubor)
+	configInfo=io.read("*line")
 	configZprava=io.read("*line")
 	configIkona=io.read("*line")
 	configSkrytNazev=io.read("*line")
