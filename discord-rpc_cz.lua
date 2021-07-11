@@ -282,7 +282,7 @@ function cistConfig()
 		io.write("zprava=Překlad anime", "\n")
 		io.write("ikona=Výchozí" , "\n")
 		io.write("skrytNazev=false", "\n")
-		io.write("autostart=true")
+		io.write("autostart=false")
 		io.close(config_soubor)
 		config_soubor = io.open("discord_rpc.cfg", "r")
 	end
@@ -376,7 +376,7 @@ if autostartValue == false then
 
 	discordRPC.initialize(appId, true)
 
-	local now = os.time(os.date('*t'))
+	now = os.time(os.date('*t'))
 
 	presence = {
 		state = "KDan#7873 / TeamNS",
@@ -420,7 +420,6 @@ end
 
 function rpc_refresh()
 	discordRPC.initialize(appId, true)
-	local now = os.time(os.date('*t'))
 	if results["zprava_check"] == false then
 		if results["zprava"]=="Překlad anime" then
 			refreshIkona()
