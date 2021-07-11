@@ -257,7 +257,7 @@ function discordRPC.errored(errorCode, message)
     print("[discordrpc] Discord: error (" .. errorCode .. ": " .. message .. ")")
 end
 
-config_path = "discord_rpc.cfg"
+config_path = "C:\\aegisub_discord_rpc.cfg"
 dis_ikona = "aegisub"
 
 function zapsatConfig()
