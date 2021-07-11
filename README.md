@@ -29,21 +29,23 @@ Aegisubu zobrazí v Rich Presence tato zpráva:
 
 Pokud se nic nezobrazilo, tak zkuste spustit Aegisub jako správce.
 
-Pak načtěte titulky a video a klikněte na možnost `Discord RPC` 
-z nabídky `Automation` pro otevření menu aktualizace údajů Rich Presence.
+Pak načtěte titulky a video a klikněte na možnost `Nastavení` 
+z nabídky `Discord RPC` v kartě `Automation` pro otevření menu nastavení údajů Rich Presence.
 
 ![Kliknutí na menu](./img/menu.png "Kliknutí na menu")
 
-Zde můžete zvolit typ zprávy, ikonu, skrýt název videa nebo vypnout RPC:
+Zde můžete zvolit zprávu, ikonu, skrýt název videa nebo zakázat spouštění skriptu.
+Po kliknutí na tlačítko "Uložit" zůstanou údaje uloženy i po opětovném spuštění Aegisubu.
 
 ![Okno](./img/okno.png "Okno")
+
+Pak už stačí zvolit možnost `Aktualizovat údaje` z nabídky `Discord RPC` v kartě `Automation`
 
 ![Detaily jsou aktualizovány](./img/detail.png "Detaily jsou aktualizovány")
 
 ### Upozornění
-Aktualizace údajů může chvíli trvat
-
 Před aktualizací se ujistěte, že:
 - Máte načtené video.
 - Máte načtené titulky, obsahující cestu k videosouboru.
 
+V případě zobrazení chybové hlášky při aktualizaci zkuste znovu nastavit údaje.
