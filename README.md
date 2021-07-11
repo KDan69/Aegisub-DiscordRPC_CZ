@@ -15,7 +15,8 @@ Navštivte nás na adrese https://www.teamnshonyaku.cz nebo na discordu https://
     soubor `discord-rpc-64.dll` a pojmenujte ho jako `discord-rpc.dll` 
     před umístěním do Aegisub složky.
 - Umístěte skript `discord-rpc_cz.lua` do složky `automation\autoload`.
-
+## Upozornění
+Při spouštění pod Windows 10 je nutné spouštět Aegisub jako správce z důvodu oprávnění k zápisu do konfiguračního souboru ve složce s Aegisubem
 ### Příklad
 Pokud jste instalovali Aegisub do složky `C:\Program Files (x86)\Aegisub`, tak:
 - Umístěte `discord-rpc.dll` do `C:\Program Files (x86)\Aegisub`.
@@ -42,10 +43,3 @@ Po kliknutí na tlačítko "Uložit" zůstanou údaje uloženy i po opětovném 
 Pak už stačí zvolit možnost `Aktualizovat údaje` z nabídky `Discord RPC` v kartě `Automation`
 
 ![Detaily jsou aktualizovány](./img/detail.png "Detaily jsou aktualizovány")
-
-### Upozornění
-Před aktualizací se ujistěte, že:
-- Máte načtené video.
-- Máte načtené titulky, obsahující cestu k videosouboru.
-
-V případě zobrazení chybové hlášky při aktualizaci zkuste znovu nastavit údaje.
