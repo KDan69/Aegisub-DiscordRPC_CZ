@@ -15,13 +15,12 @@ Navštivte nás na adrese https://www.teamnshonyaku.cz nebo na discordu https://
     soubor `discord-rpc-64.dll` a pojmenujte ho jako `discord-rpc.dll` 
     před umístěním do Aegisub složky.
 - Umístěte skript `discord-rpc_cz.lua` do složky `automation\autoload`.
-## Upozornění
-Při spouštění pod Windows 10 je nutné spouštět Aegisub jako správce z důvodu oprávnění k zápisu do konfiguračního souboru ve složce s Aegisubem
 ### Příklad
 Pokud jste instalovali Aegisub do složky `C:\Program Files (x86)\Aegisub`, tak:
 - Umístěte `discord-rpc.dll` do `C:\Program Files (x86)\Aegisub`.
 - Umístěte `discord-rpc_cz.lua` do `C:\Program Files (x86)\Aegisub\automation\autoload`.
-
+## Upozornění
+Při spouštění pod Windows 10 je nutné spouštět Aegisub jako správce z důvodu oprávnění k zápisu do konfiguračního souboru ve složce s Aegisubem
 ## Použití
 Po správné instalaci se při každém spuštění 
 Aegisubu zobrazí v Rich Presence tato zpráva:
