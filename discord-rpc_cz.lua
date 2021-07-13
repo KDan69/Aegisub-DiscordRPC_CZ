@@ -5,7 +5,7 @@
 --    ▀   ▀▀▀▀▀ ▀▀▀▀▀ ▀ ▀ ▀ █   █     █
 --       TEAM NSHON'YAKU    ▀   ▀ ▀▀▀▀▀  
 
--- Původní kód: muhdnurhidayat (https://github.com/MuhdNurHidayat/Aegisub-DiscordRPC)
+-- Původní kód: mnh48 (https://github.com/mnh48/Aegisub-DiscordRPC)
 
 
 local ffi = require "ffi"
@@ -15,7 +15,7 @@ local appId = "830097553595826216"
 script_name = "Discord RPC"
 script_description = "Výstup Aegisub informací do Discord Rich Presence"
 script_author = "KDan"
-script_version = "3.6"
+script_version = "4"
 
 ffi.cdef[[
 typedef struct DiscordRichPresence {
@@ -458,10 +458,10 @@ function rpc_refresh()
 				}
 				discordRPC.updatePresence(presence)
 			else
-				aegisub.debug.out("Please ensure your subtitle file has video file path defined before updating the RPC")
+				aegisub.debug.out("Před aktualizací zkontroluj videosoubor")
 			end
 		else
-			aegisub.debug.out("Please ensure your subtitle file has video file path defined before updating the RPC")
+			aegisub.debug.out("Před aktualizací zkontroluj videosoubor")
 		end
 	end
 end
@@ -488,10 +488,10 @@ function update_rpc_1()
             }
             discordRPC.updatePresence(presence)
         else
-            aegisub.debug.out("Please ensure your subtitle file has video file path defined before updating the RPC")
+            aegisub.debug.out("Před aktualizací zkontroluj videosoubor")
         end
     else
-        aegisub.debug.out("Please ensure your subtitle file has video file path defined before updating the RPC")
+        aegisub.debug.out("Před aktualizací zkontroluj videosoubor")
     end
 end
 function update_rpc_2()
@@ -515,13 +515,18 @@ function update_rpc_2()
             }
             discordRPC.updatePresence(presence)
         else
-            aegisub.debug.out("Please ensure your subtitle file has video file path defined before updating the RPC")
+            aegisub.debug.out("Před aktualizací zkontroluj videosoubor")
         end
     else
-        aegisub.debug.out("Please ensure your subtitle file has video file path defined before updating the RPC")
+        aegisub.debug.out("Před aktualizací zkontroluj videosoubor")
     end
+end
+
+function o_skriptu()
+	aegisub.debug.out("Skript vytvořil KDan ze skupiny Team NShon'yaku\nPůvodní kód: mnh48\nNejnovější verzi skriptu najdete na:\nhttps://github.com/KDan69/Aegisub-DiscordRPC_CZ\n\nV případě jakéhokoliv problému mě neváhejte kontaktovat na Discordu ^_^ (KDan#7873)")
 end
 
 aegisub.register_macro("Discord RPC/Aktualizovat údaje", "Aktualizace Discord RPC", rpc_refresh)
 aegisub.register_macro("Discord RPC/Vypnout", "Vypnutí Discord RPC", discordRPC.clearPresence)
 aegisub.register_macro("Discord RPC/Nastavení", "Nastavení Discord RPC", rpc_setup)
+aegisub.register_macro("Discord RPC/O skriptu...", "Zobrazí info o skriptu", o_skriptu)
